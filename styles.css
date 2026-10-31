@@ -1,0 +1,568 @@
+/* Customize these colors and typefaces first. No external dependencies. */
+:root{--paper:#f0eee7;--ink:#252b24;--muted:#666c60;--accent:#c9d48c;--line:#c9cbbf;--dock:142px;--serif:Georgia,'Times New Roman',serif;--sans:Arial,Helvetica,sans-serif}
+*{box-sizing:border-box}body{margin:0;background:var(--paper);color:var(--ink);font:16px/1.6 var(--sans)}a{color:inherit}button{font:inherit}button,a{-webkit-tap-highlight-color:transparent}button:focus-visible,a:focus-visible{outline:3px solid #67772b;outline-offset:5px}.skip{position:fixed;left:12px;top:-80px;z-index:10;background:white;padding:12px}.skip:focus{top:12px}.shell{display:grid;grid-template-columns:30% 70%;height:calc(100dvh - var(--dock));min-height:0}.profile{padding:32px clamp(24px,4vw,68px);border-right:1px solid var(--line);overflow:auto}.wordmark{text-decoration:none;font-size:12px;font-weight:bold;letter-spacing:2px}.wordmark span{font-weight:normal;color:var(--muted)}.portrait{margin:36px 0 24px;width:clamp(100px,12vw,180px);aspect-ratio:1;border-radius:50% 50% 8px 8px;background:linear-gradient(140deg,#dce0c6,#bec7aa);display:flex;flex-direction:column;justify-content:center;align-items:center}.portrait span{font:60px var(--serif)}.portrait small{font-size:8px;letter-spacing:2px}.eyebrow{font-size:10px;font-weight:bold;letter-spacing:2px;margin:0 0 22px}.profile h1{font:clamp(30px,3vw,46px)/1.1 var(--serif);margin:0 0 20px}.profile h1 span{display:block;font:14px var(--sans);margin-top:12px}.bio{max-width:330px;color:var(--muted);font-size:14px}.location{font-size:12px;margin:24px 0}.contact{display:flex;justify-content:space-between;max-width:330px;text-decoration:none;border-bottom:1px solid var(--ink);padding:10px 0}.placeholder-note{font-size:10px;color:var(--muted);margin-top:20px}main{overflow-y:auto;padding:clamp(32px,5vw,80px);scrollbar-gutter:stable}main:focus{outline:none}main section{max-width:760px;margin:auto}h2{font:clamp(40px,5.2vw,80px)/1.07 var(--serif);letter-spacing:-2px;margin:24px 0}h2 em{font-weight:normal;color:#687440}h3{font-size:19px;margin-bottom:8px}.lead{font-size:18px;color:var(--muted);max-width:620px}.home{min-height:100%;position:relative;display:flex;flex-direction:column;justify-content:center}.home .issue{font-size:10px;letter-spacing:2px;color:var(--muted);margin:24px 0 0}.home h2{max-width:700px}.motto-end{font:clamp(20px,2.3vw,34px)/1.4 var(--serif);max-width:460px}.home-bottom{display:flex;gap:20px;align-items:center;margin-top:32px;font-size:12px;color:var(--muted)}.star{font-size:64px;color:#687440}.rule{border-top:1px solid var(--line);margin:30px 0}.note{font-size:12px;color:var(--muted);margin-top:30px}.projects{margin-top:32px}.projects article{border-top:1px solid var(--line);padding:22px 0}.projects article>span,.projects small{font-size:10px;letter-spacing:1px;color:var(--muted)}.projects p{margin:8px 0}.skills{margin-top:36px}.skills div{border-top:1px solid var(--line);padding:20px 0;display:grid;grid-template-columns:1fr 1.5fr;gap:20px}dt{font-weight:bold}dd{margin:0;color:var(--muted)}.dock{height:var(--dock);position:fixed;bottom:0;left:0;right:0;background:var(--ink);color:var(--paper);border-top:1px solid #495043}.dock-top{display:flex;justify-content:space-between;align-items:center;padding:12px 30px;gap:12px}.dock-top p{margin:0;font-size:11px;letter-spacing:1px}.dock-top button{border:1px solid #7b826e;border-radius:20px;background:none;color:inherit;font-size:10px;padding:5px 12px;cursor:pointer}#categories{overflow:hidden;touch-action:pan-y;cursor:grab;user-select:none}#categories.dragging{cursor:grabbing}#track{display:flex;width:max-content;will-change:transform}.category-group{display:flex;align-items:center;flex-shrink:0}.category{border:0;background:none;color:var(--paper);font:clamp(26px,3.8vw,54px)/1.2 var(--serif);white-space:nowrap;padding:4px 26px 16px;cursor:pointer}.category::after{content:none;color:#899569;font-size:26px;margin-left:50px}.category[aria-current=page]{color:var(--accent)}.category:hover{color:var(--accent)}.no-js{position:fixed;top:10px;right:10px;background:white;padding:20px}
+@media(min-width:761px) and (max-height:740px){.portrait{margin:18px 0 16px;width:100px}.profile{padding-top:20px}.location{margin:12px 0}.profile h1{font-size:30px}}
+/* Mobile is a simple fallback; refine its layout later. */
+@media(max-width:760px){:root{--dock:125px}.shell{display:block;height:auto;padding-bottom:var(--dock)}.profile{border-right:0;border-bottom:1px solid var(--line);padding:24px}.portrait{margin-top:24px;width:110px}.bio,.contact{max-width:none}main{padding:40px 24px;overflow:visible;min-height:65vh}h2{font-size:48px}.dock-top{padding:10px 16px}.dock-top p{font-size:9px;letter-spacing:0}.category{font-size:32px;padding:10px 20px}.category::after{margin-left:35px}.skills div{grid-template-columns:1fr;gap:8px}}
+@media(prefers-reduced-motion:reduce){*{scroll-behavior:auto!important}}
+
+/* Rounded frosted category cards. */
+:root{--dock:154px}
+.dock{background:radial-gradient(ellipse at 25% 110%,#65744e,transparent 55%),radial-gradient(ellipse at 80% 0%,#454d42,transparent 55%),#252b24}
+.category-group{gap:16px;padding-right:16px;padding-top:6px;padding-bottom:12px}
+.category{border:1px solid #ffffff35;border-radius:24px;background:#ffffff10;backdrop-filter:blur(16px);-webkit-backdrop-filter:blur(16px);box-shadow:inset 0 1px 0 #ffffff1c,0 6px 16px #00000018;font:24px/1.2 var(--sans);padding:20px 34px;transition:background .2s,transform .2s}
+.category::after{content:none}
+.category:hover{background:#ffffff20;transform:translateY(-2px)}
+.category[aria-current=page]{background:#c9d48cdd;color:#252b24;border-color:#dce5b0}
+.profile{padding-left:clamp(20px,3vw,44px);padding-right:clamp(20px,3vw,44px)}
+@media(max-width:760px){:root{--dock:140px}.category{font-size:20px;padding:18px 26px;border-radius:22px}.profile{padding:24px}}
+@media(prefers-reduced-motion:reduce){.category{transition:none}}
+
+[hidden]{display:none!important}
+/* Desktop background: edit these gradients to change the depth and color. */
+@media(min-width:761px){
+ body{background:radial-gradient(ellipse at 83% 26%,#dce4cc 0%,transparent 48%),#f3f1ea}
+ main{position:relative;isolation:isolate}
+ main::before{content:'';position:fixed;z-index:-1;pointer-events:none;top:5vh;right:-65px;width:260px;aspect-ratio:1;border-radius:50%;background:radial-gradient(circle at 29% 25%,#fafbf3 0%,#e1e7d3 30%,#bdc8ab 65%,#99a98a 100%);box-shadow:inset -14px -16px 28px #7a89642b,14px 24px 42px #71805a20;opacity:.45}
+ main section{position:relative;z-index:1}
+ .profile{background:#f3f1ea99}
+}
+
+/* Inline vector icons inherit the surrounding color. */
+.icon{display:inline-flex;width:21px;height:21px;flex-shrink:0;vertical-align:middle}
+.icon svg{width:100%;height:100%}
+.category{display:inline-flex;align-items:center;gap:13px}
+.category .icon{width:26px;height:26px}
+.location{display:flex;align-items:center;gap:9px}
+.contact{justify-content:flex-start;align-items:center;gap:10px}
+.contact>span:last-child{margin-left:auto}
+/* Latest desktop direction: joyful blue palette and a taller category dock. */
+:root{--paper:#f1f8ff;--ink:#183651;--muted:#536f87;--accent:#bfe6ff;--line:#cadfee}
+body{background:var(--paper)}
+h2 em,.star{color:#327fb1}
+.portrait{background:linear-gradient(140deg,#d9f1ff,#9dcef2)}
+button:focus-visible,a:focus-visible{outline-color:#1684cf}
+.dock{background:radial-gradient(ellipse at 20% 100%,#458ec5,transparent 60%),radial-gradient(ellipse at 85% 0%,#6eb8ea,transparent 65%),#235a87;color:#f4faff}
+.dock-top button{border-color:#afd9f5}
+.category{background:#d5efff24;border-color:#e4f6ff70;box-shadow:inset 0 1px 0 #ffffff45,0 8px 22px #123f6a20}
+.category:hover{background:#e2f5ff40;color:#fff}
+.category[aria-current=page]{background:#c5eaffdf;color:#164a71;border-color:#e4f6ff}
+@media(min-width:761px){
+ :root{--dock:35dvh}
+ body{background:radial-gradient(ellipse at 83% 26%,#d8edff 0%,transparent 48%),#f1f8ff}
+ .profile{background:#f1f8ff99}
+ main::before{background:radial-gradient(circle at 29% 25%,#ffffff 0%,#d4edff 30%,#94c8ef 65%,#65a5d5 100%);box-shadow:inset -14px -16px 28px #3d7eaf2b,14px 24px 42px #397aa620}
+ .dock{display:flex;flex-direction:column}
+ .dock-top{flex:0 0 auto;padding-top:16px;padding-bottom:12px}
+ #categories{flex:1;display:flex;align-items:center;min-height:0}
+ .category-group{padding-top:10px;padding-bottom:14px;gap:20px;padding-right:20px}
+ .category{height:clamp(76px,22dvh,260px);padding:24px clamp(30px,4vw,65px);border-radius:30px;font-size:clamp(24px,2.5vw,40px)}
+ .category .icon{width:34px;height:34px}
+}
+
+/* Softer portrait frame and a purposeful compass accent. */
+.portrait{border-radius:28px;border:3px solid #ffffff;outline:1px solid #b9d9f0;box-shadow:0 12px 28px #3376a51a;background:linear-gradient(145deg,#e0f4ff,#a5d5f7)}
+.feature-icon{display:flex;align-items:center;justify-content:center;flex-shrink:0;width:58px;height:58px;border-radius:18px;background:#dbefff;color:#327fb1;border:1px solid #b9ddf5}
+.feature-icon svg{width:34px;height:34px}
+.category[aria-current=page]{box-shadow:inset 0 0 0 1px #ffffffa6,0 8px 24px #123f6a30}
+
+/* Desktop layered panels: soft bevels and shadows without moving text. */
+@media(min-width:761px){
+ .shell{gap:20px;padding:22px}
+ .profile{border:1px solid #ffffffd9;border-radius:26px;background:linear-gradient(145deg,#ffffffec,#e3f2ffcc);box-shadow:inset 1px 1px 0 #fff,inset -1px -1px 0 #bdd9ed,0 14px 32px #2a639b1a,0 3px 8px #35658d12}
+ main{border:1px solid #ffffffed;border-radius:28px;background:linear-gradient(140deg,#ffffffb8,#e6f3ff99);box-shadow:inset 1px 1px 0 #fff,inset -1px -1px 0 #c7e1f3,0 16px 35px #2a639b20;padding:clamp(28px,3.5vw,56px)}
+ .projects article,.skills div{border:1px solid #cce3f4;border-radius:18px;padding:20px;margin:14px 0;background:linear-gradient(145deg,#ffffffde,#e5f2ffb0);box-shadow:inset 0 1px 0 #fff,0 5px 13px #285e8a0c}
+}
+/* Cleaner contemporary blue direction; desktop dock reduced to 30%. */
+:root{--paper:#f7f9fc;--ink:#172b4d;--muted:#52647c;--accent:#2563eb;--line:#dce5ef}
+body{background:#f7f9fc}
+h2 em{color:#2563eb}
+@media(min-width:761px){
+ :root{--dock:30dvh}
+ body{background:radial-gradient(ellipse at 85% 12%,#eaf3ff,transparent 55%),#f7f9fc}
+ .profile,main{background:#ffffffed;border:1px solid #e2eaf4;box-shadow:0 8px 28px #203e6510}
+ .profile{border-radius:24px}
+ main{border-radius:24px}
+ main::before{opacity:.2;background:radial-gradient(circle at 30% 25%,#fff,#c8e0ff 60%,#85b7f3);box-shadow:0 15px 35px #387bc615}
+ .category{height:clamp(70px,18dvh,220px)}
+ .projects article,.skills div{background:#f8fbff;border-color:#e2eaf4;box-shadow:0 3px 12px #203e6508}
+}
+.dock{background:#eaf2fc;color:#172b4d;border-top:1px solid #d9e6f5}
+.category{background:#ffffffb8;color:#254364;border:1px solid #ffffff;box-shadow:0 5px 16px #244c7b0d}
+.category:hover{background:#fff;color:#174fba}
+.category[aria-current=page]{background:#2563eb;color:#fff;border-color:#2563eb;box-shadow:0 8px 22px #2563eb30}
+.portrait{background:#e8f2ff;border-color:#fff;outline-color:#d6e5f7;box-shadow:0 8px 20px #244c7b12}
+/* Desktop: fixed upper panels with no internal scrolling. */
+@media(min-width:761px){
+ :root{--dock:27dvh}
+ .shell{height:73dvh;grid-template-columns:minmax(0,3fr) minmax(0,7fr);padding:16px;gap:16px}
+ .profile,main{overflow:hidden;scrollbar-gutter:auto;min-width:0;padding:clamp(16px,2.5vh,28px) clamp(20px,2.5vw,40px)}
+ .portrait{width:clamp(76px,12vh,125px);margin:16px 0}
+ .profile h1{font-size:clamp(25px,3.8vh,38px);margin-bottom:12px}
+ .profile h1 span{font-size:12px;line-height:1.4;margin-top:8px}
+ .profile .eyebrow{margin-bottom:12px;font-size:9px}
+ .bio{font-size:clamp(11px,1.65vh,14px);line-height:1.5}
+ .location{margin:12px 0;font-size:11px}
+ .placeholder-note{margin-top:10px;font-size:9px}
+ .contact{padding:7px 0;font-size:13px}
+ main h2{font-size:clamp(30px,5.5vh,58px);margin:12px 0;letter-spacing:-1px}
+ main .eyebrow{margin-bottom:10px;font-size:9px}
+ main p{font-size:clamp(11px,1.65vh,15px);line-height:1.45;margin:8px 0}
+ main .lead{font-size:clamp(12px,1.9vh,17px)}
+ main h3{font-size:clamp(13px,2vh,18px);margin:8px 0 5px}
+ main .projects,main .skills{margin-top:14px}
+ main .projects article,main .skills div{padding:10px 14px;margin:8px 0}
+ main .skills{font-size:clamp(11px,1.6vh,14px)}
+ main .skills div{gap:12px}
+ main .rule{margin:16px 0}
+ main .note{font-size:10px;margin-top:12px}
+ .home-bottom{margin-top:16px;gap:14px}
+ .home .motto-end{font-size:clamp(18px,3vh,28px)}
+ .category{height:clamp(64px,16dvh,190px)}
+}
+
+/* Calm static navigation: one visible button per category, no looping. */
+#categories{overflow:visible;cursor:default;user-select:auto;touch-action:auto;padding:8px 24px 18px}
+#track{display:grid;grid-template-columns:repeat(5,minmax(0,1fr));gap:16px;width:100%;transform:none;will-change:auto}
+.category{width:100%;min-width:0;justify-content:center;white-space:normal;text-align:center;font-size:clamp(14px,1.7vw,24px);gap:10px;padding:18px;transition:background .15s,color .15s}
+.category:hover{transform:none}
+.category .icon{width:25px;height:25px}
+@media(min-width:761px){#categories{width:100%}.category{height:clamp(64px,16dvh,180px)}}
+@media(max-width:760px){#categories{padding:6px 12px}#track{gap:6px}.category{flex-direction:column;padding:8px 3px;font-size:10px;gap:6px;border-radius:14px}.category .icon{width:20px;height:20px}}
+
+/* Navigation inside the right panel; no bottom dock. */
+.right-panel{min-width:0;min-height:0;display:flex;flex-direction:column;border:1px solid #e2eaf4;border-radius:24px;background:#ffffffed;box-shadow:0 8px 28px #203e6510;overflow:hidden}
+.panel-nav{flex:0 0 auto;padding:18px 20px;border-bottom:1px solid #e7eef7}
+.panel-nav #categories{padding:0;display:block;overflow:visible}
+.panel-nav #track{gap:8px}
+.panel-nav .category{height:auto;min-height:48px;padding:10px 8px;border-radius:12px;font-size:clamp(11px,1vw,15px);gap:7px;background:#f1f6fc;border:1px solid #e1eaf5;box-shadow:none}
+.panel-nav .category .icon{width:18px;height:18px}
+.panel-nav .category[aria-current=page]{background:#2563eb;color:#fff;border-color:#2563eb}
+.panel-nav .category:hover{background:#e4efff;color:#174fba}
+.panel-nav .category[aria-current=page]:hover{background:#1d4ed8;color:#fff}
+.right-panel main{flex:1;min-height:0;border:0;border-radius:0;background:transparent;box-shadow:none;overflow:hidden;position:relative}
+@media(min-width:761px){
+ :root{--dock:0px}
+ .shell{height:100dvh;padding:20px;gap:20px}
+ .right-panel main{padding:clamp(20px,3vh,40px) clamp(24px,3vw,48px)}
+}
+@media(max-width:760px){
+ .shell{padding-bottom:0}
+ .right-panel{margin:16px}
+ .panel-nav{padding:12px 8px}
+ .panel-nav .category{flex-direction:column;font-size:10px;padding:8px 2px}
+ .right-panel main{overflow:visible;padding:24px 18px}
+}
+
+/* Opening grid -> compact navigation using the same five buttons. */
+#home-button{border:0;background:#edf4ff;color:#285c9b;border-radius:9px;padding:7px 12px;font-size:11px;cursor:pointer;margin:0 0 10px}
+.right-panel.is-home .panel-nav{display:none}
+.right-panel .intro-home{min-height:0;height:100%;display:flex;flex-direction:column;justify-content:center;max-width:850px}
+.intro-home .typed-motto{font-size:clamp(26px,4.5vh,48px);line-height:1.15;min-height:3.45em;max-width:720px;letter-spacing:-1px;margin:10px 0;color:#21496f}
+.intro-hint{color:#52647c;margin-bottom:18px!important}
+.is-home #categories{padding:0;display:block}
+.is-home #track{grid-template-columns:repeat(2,minmax(0,1fr));gap:12px}
+.is-home .category{height:clamp(64px,12vh,110px);border-radius:18px;justify-content:flex-start;padding:18px 24px;background:#f0f6ff;border:1px solid #dce9f8;box-shadow:0 4px 12px #23548508;font-size:clamp(15px,1.8vw,22px);gap:14px;transform-origin:top left}
+.is-home .category:last-child{grid-column:1/-1}
+.is-home .category .icon{width:25px;height:25px;color:#3478cf}
+.is-home .category:hover{background:#e3efff;border-color:#a5c8f4}
+@media(max-width:760px){.intro-home .typed-motto{font-size:30px}.is-home .category{height:76px;padding:14px;flex-direction:row;font-size:14px}.right-panel .intro-home{height:auto;min-height:65vh}}
+
+/* Larger, card-based content across all sections. */
+.motto-card,.detail-card{border:1px solid #d7e5f5;border-radius:20px;background:#f4f8ff;box-shadow:0 5px 16px #234a7509;padding:20px 24px}
+.motto-card{background:linear-gradient(120deg,#f0f7ff,#f9fcff);margin-bottom:14px}
+.content-cards{display:grid;gap:14px;margin-top:18px}
+.detail-card h3{margin-top:0}
+@media(min-width:761px){
+ .profile{padding:28px clamp(22px,2.5vw,42px)}
+ .portrait{width:clamp(125px,17vh,180px);margin:22px 0}
+ .profile h1{font-size:clamp(30px,4.5vh,48px);margin-bottom:18px}
+ .profile h1 span{font-size:clamp(14px,1.9vh,18px);line-height:1.4}
+ .profile .eyebrow{font-size:11px;margin-bottom:16px;letter-spacing:1.5px}
+ .profile .bio{font-size:clamp(15px,1.9vh,18px);line-height:1.55}
+ .profile .location,.profile .contact{font-size:15px;margin-top:20px}
+ .right-panel main{padding:24px clamp(24px,3vw,48px)}
+ main section{max-width:100%}
+ main h2{font-size:clamp(34px,5vh,54px);line-height:1.08;margin:12px 0 16px}
+ main .eyebrow{font-size:11px}
+ main p,main .lead,main .skills{font-size:clamp(16px,2vh,20px);line-height:1.45}
+ main h3,main dt{font-size:clamp(18px,2.3vh,23px);line-height:1.25}
+ main .projects{display:grid;gap:12px;margin-top:18px}
+ main .projects article,main .skills div{padding:16px 20px;margin:0;border-radius:18px}
+ main .projects article p{margin:7px 0}
+ main .projects small{font-size:11px;letter-spacing:.3px}
+ main .skills{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:12px;margin-top:20px}
+ main .skills div{display:flex;flex-direction:column;gap:8px}
+ main .skills dd{font-size:clamp(15px,1.9vh,18px)}
+ .intro-home .typed-motto{font-size:clamp(29px,4.6vh,52px);min-height:3.45em;margin:0;line-height:1.15}
+ .is-home .category{font-size:clamp(18px,2vw,25px)}
+ .panel-nav .category{font-size:clamp(13px,1.1vw,17px)}
+}
+@media(min-width:761px) and (max-height:780px){
+ .profile{padding-top:20px;padding-bottom:20px}
+ .portrait{width:120px;margin:14px 0}
+ .profile h1{font-size:32px;margin-bottom:12px}
+ .profile .location,.profile .contact{margin-top:12px}
+ .right-panel main{padding-top:18px;padding-bottom:18px}
+ main h2{font-size:34px;margin:9px 0 12px}
+ main p,main .lead{font-size:16px}
+ main .projects article,main .skills div,.detail-card{padding:12px 16px}
+ main .projects,.content-cards,main .skills{gap:10px;margin-top:12px}
+ main h3,main dt{font-size:18px}
+ main .skills dd{font-size:15px}
+ .motto-card{padding:16px 20px}
+ .intro-home .typed-motto{font-size:30px}
+ .is-home .category{height:74px}
+}
+
+/* Current marketing work first; earlier support experience follows. */
+.card-label{display:block;font-size:10px;line-height:1.4;letter-spacing:1px;font-weight:600;color:#526f91;margin-bottom:7px}
+@media(min-width:761px){
+ #content:has(.earlier-role) .projects{grid-template-columns:repeat(2,minmax(0,1fr))}
+ #content:has(.earlier-role) .content-cards{grid-template-columns:repeat(2,minmax(0,1fr))}
+ #content:has(.earlier-role) .content-cards .earlier-role{grid-column:1/-1}
+ #content .earlier-role{border-color:#d7e3f0;background:#f7faff}
+}
+@media(min-width:761px) and (max-height:780px){
+ #content:has(.earlier-role) h2{font-size:30px;margin:7px 0 10px}
+ #content:has(.earlier-role) p{font-size:15px;line-height:1.4}
+ #content:has(.earlier-role) .projects article,#content:has(.earlier-role) .detail-card{padding:12px 14px}
+}
+
+/* Objective, strengths, and confirmed availability in the profile. */
+.profile-label{font-size:10px!important;font-weight:700;letter-spacing:1.2px;color:#526f91;margin:0 0 7px}
+.strengths{display:flex;flex-wrap:wrap;gap:6px;margin:12px 0}
+.strengths span{font-size:11px;padding:4px 8px;border:1px solid #d7e5f5;border-radius:20px;background:#f0f6ff;color:#285783}
+.availability{padding:12px 14px;border:1px solid #d7e5f5;border-radius:14px;background:#f4f8ff;margin:14px 0}
+.availability p:not(.profile-label){margin:0;font-size:14px;line-height:1.5}
+.availability small{font-size:11px;color:#52647c}
+@media(min-width:761px){
+ .profile{display:flex;flex-direction:column;justify-content:center}
+ .profile .portrait{flex-shrink:0;width:clamp(100px,14vh,155px);margin:16px 0}
+ .profile .bio{font-size:clamp(14px,1.75vh,17px);margin:0;line-height:1.5}
+ .profile .location{margin:10px 0;font-size:13px}
+ .profile .contact{margin-top:8px}
+ .profile h1{margin-bottom:14px}
+}
+@media(min-width:761px) and (max-height:780px){
+ .profile{padding-top:16px;padding-bottom:16px}
+ .profile .portrait{width:95px;margin:12px 0}
+ .profile h1{font-size:30px;margin-bottom:10px}
+ .profile h1 span{font-size:13px}
+ .profile .eyebrow{font-size:10px;margin-bottom:9px}
+ .profile .bio{font-size:14px}
+ .strengths{margin:9px 0}
+ .strengths span{font-size:10px}
+ .availability{margin:8px 0;padding:9px 12px}
+ .availability p:not(.profile-label){font-size:13px}
+ .placeholder-note{margin-bottom:0}
+}
+
+.whatsapp-contact{color:#246240;border-bottom-color:#b9d4c5}.whatsapp-contact:hover{color:#17472d}
+@media(min-width:761px) and (max-height:780px){.profile .contact{margin-top:5px;padding:5px 0;font-size:13px}.profile .portrait{width:85px;margin:10px 0}}
+
+/* Combined experience and skills: compact selectors, readable detail panels. */
+.panel-nav #track{grid-template-columns:repeat(6,minmax(0,1fr));gap:6px}
+.panel-nav .category{font-size:clamp(11px,1vw,15px);gap:5px;padding:10px 5px}
+.panel-nav .category .icon{width:16px;height:16px}
+.is-home #track{grid-template-columns:repeat(2,minmax(0,1fr))}
+.is-home .category:last-child{grid-column:auto}
+.employer-tabs{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:10px;margin:16px 0}
+.employer-tabs button{border:1px solid #d4e3f4;border-radius:12px;background:#f1f6fd;color:#284b70;padding:12px 8px;cursor:pointer;font-size:13px;line-height:1.3}
+.employer-tabs button[aria-pressed=true]{background:#2563eb;color:white;border-color:#2563eb}
+.job-card{padding:20px 24px}
+.job-card h4{font-size:14px;margin:0 0 6px;color:#215c9d}
+.achievement{margin-top:14px;border-top:1px solid #dbe7f6;padding-top:12px}
+@media(min-width:761px){
+ .skill-groups{grid-template-columns:1fr}
+ .job-card p{font-size:clamp(15px,1.8vh,18px);line-height:1.45}
+ .role-lines{display:grid;grid-template-columns:1.4fr 1fr;gap:20px}
+ .profile .availability{margin:10px 0}
+ .profile .availability small{font-size:10px;line-height:1.5;display:block;margin-top:5px}
+}
+@media(min-width:761px) and (max-height:780px){
+ #content:has(#employer-detail) h2{font-size:30px;margin:8px 0}
+ .job-card{padding:14px 18px}.job-card p{font-size:14px;line-height:1.4}
+ .employer-tabs{margin:12px 0}.achievement{padding-top:10px;margin-top:10px}
+ .profile .portrait{width:76px;margin:8px 0}
+ .profile h1{font-size:29px}
+}
+
+.tool-list{display:flex;flex-wrap:wrap;gap:6px;margin:10px 0}
+.tool-list>span{display:inline-flex;align-items:center;gap:6px;font-size:11px;line-height:1.3;padding:5px 7px;background:#eaf2ff;border-radius:8px;color:#315c8a}
+.tool-icon,.tool-icon svg{display:block;width:16px;height:16px;flex-shrink:0}
+@media(min-width:761px){.skill-groups{grid-template-columns:repeat(2,minmax(0,1fr));gap:12px}.skill-groups .detail-card{padding:16px}.skill-groups p{font-size:16px}.panel-nav .category[data-section=skills]{font-size:12px}}
+@media(min-width:761px) and (max-height:780px){.skill-groups p{font-size:14px}.skill-groups .detail-card{padding:12px}.tool-list{margin:7px 0}.tool-list>span{font-size:10px;padding:4px 6px}}
+
+.sample-preview{display:inline-flex;align-items:center;gap:7px;margin-top:10px;padding:8px 12px;border:1px solid #cbdff7;background:#e9f2ff;color:#215d9c;border-radius:10px;font-size:12px;cursor:pointer}
+.sample-preview:disabled{color:#64758a;background:#f0f3f7;border-color:#e0e6ee;cursor:default}
+#sample-viewer{padding:0;border:1px solid #dbe6f4;border-radius:20px;width:min(1100px,92vw);max-width:none;height:min(850px,90dvh);max-height:90dvh;background:#f8fbff;color:#183651;box-shadow:0 25px 90px #0c234a55}
+#sample-viewer::backdrop{background:#10223c80;backdrop-filter:blur(8px)}
+.viewer-panel{height:100%;display:flex;flex-direction:column;padding:18px;gap:12px}
+.viewer-header{display:flex;align-items:center;justify-content:space-between;gap:15px}
+.viewer-header h2{font:22px/1.3 Arial,sans-serif;letter-spacing:0;margin:0}
+.viewer-controls{display:flex;align-items:center;justify-content:center;gap:12px}
+.viewer-panel button{padding:8px 13px;border:1px solid #cadcf2;border-radius:9px;background:white;color:#214b7e;cursor:pointer;font-size:14px}
+.viewer-panel button:disabled{opacity:.5;cursor:default}
+#image-stage{flex:1;min-height:0;display:flex;justify-content:center;align-items:center;overflow:hidden;background:#eaf0f7;border-radius:12px;touch-action:none}
+#sample-image{display:block;max-width:100%;max-height:100%;object-fit:contain;user-select:none;transform-origin:center}
+#image-stage.can-pan{cursor:grab}#image-stage.can-pan:active{cursor:grabbing}
+#viewer-caption{font-size:13px;line-height:1.4;margin:0}
+
+/* Four service offers; simplified profile identity. */
+@media(min-width:761px){.service-offers{grid-template-columns:repeat(2,minmax(0,1fr))}.profile h1{margin-top:0;margin-bottom:10px}.profile>.eyebrow{margin-bottom:18px}.profile .portrait{margin-top:0}}
+
+/* Left-aligned profile with larger type and aligned availability edges. */
+.profile{text-align:left;align-items:stretch}
+.profile .portrait{align-self:flex-start}
+.profile .availability{width:100%;box-sizing:border-box;padding:12px 0;border-left:0;border-right:0;border-radius:0;background:transparent;border-top:1px solid #d7e5f5;border-bottom:1px solid #d7e5f5;text-align:left}
+.profile .availability .profile-label{margin-bottom:8px}
+.profile .availability p:not(.profile-label){font-size:15px;line-height:1.5;margin:0}
+.profile .availability small{font-size:13px;line-height:1.5;display:block;margin-top:5px}
+@media(min-width:761px){
+ .profile h1{font-size:clamp(34px,4.7vh,48px);line-height:1.1}
+ .profile>.eyebrow{font-size:12px;line-height:1.5;letter-spacing:1.3px;margin-bottom:16px}
+ .profile .bio{font-size:clamp(16px,1.9vh,19px);line-height:1.5}
+ .profile .profile-label{font-size:11px!important}
+ .profile .strengths span{font-size:12px}
+ .profile .location,.profile .contact{font-size:15px}
+ .profile .availability strong{font-weight:600}
+}
+@media(min-width:761px) and (max-height:780px){
+ .profile .portrait{width:80px}
+ .profile h1{font-size:34px}
+ .profile .bio{font-size:16px}
+ .profile>.eyebrow{font-size:11px;margin-bottom:12px}
+ .profile .strengths{gap:5px}
+ .profile .strengths span{font-size:11px;padding:4px 7px}
+ .profile .availability{padding:10px 0;margin:8px 0}
+ .profile .availability p:not(.profile-label){font-size:14px}
+ .profile .availability small{font-size:12px}
+ .profile .contact{font-size:14px}
+}
+
+/* Six service offers in a balanced desktop grid. */
+@media(min-width:761px){
+ main .service-offers{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));grid-auto-rows:1fr;gap:14px}
+ main .service-offers article{margin:0;padding:18px 20px;display:flex;flex-direction:column;justify-content:flex-start}
+ main .service-offers h3{margin:0 0 8px;font-size:clamp(18px,2vh,22px);line-height:1.25}
+ main .service-offers p{font-size:clamp(15px,1.8vh,18px);line-height:1.45;margin:0}
+}
+@media(min-width:761px) and (max-height:780px){main .service-offers{gap:10px;margin-top:12px}main .service-offers article{padding:12px 15px}main .service-offers h3{font-size:17px;margin-bottom:6px}main .service-offers p{font-size:14px}}
+
+@media(min-width:761px){
+ main .sample-grid{grid-template-columns:repeat(2,minmax(0,1fr));gap:12px}
+ main .sample-grid article{display:flex;flex-direction:column;padding:14px 18px;margin:0}
+ main .sample-grid h3{font-size:19px;line-height:1.25;margin:0 0 7px}
+ main .sample-grid p{font-size:15px;line-height:1.4;margin:0 0 10px}
+ main .sample-grid .sample-preview{align-self:flex-start;margin-top:auto}
+ main .sample-grid .card-label{font-size:9px;margin-bottom:7px}
+}
+@media(min-width:761px) and (max-height:780px){
+ main:has(.sample-grid) h2{font-size:29px;margin:7px 0 10px}
+ main:has(.sample-grid) .lead{font-size:14px}
+ main .sample-grid{gap:9px;margin-top:12px}
+ main .sample-grid article{padding:11px 14px}
+ main .sample-grid h3{font-size:17px}
+ main .sample-grid p{font-size:13px}
+ main .sample-grid .sample-preview{padding:6px 9px;font-size:11px}
+}
+
+/* Consistent employer detail: heading, responsibilities, accomplishment. */
+.job-heading h3{margin:5px 0 8px}.job-heading>p{margin:5px 0}
+.job-entry .responsibility-card{margin-top:14px;padding:16px 20px}
+.job-entry h4{font-size:17px;line-height:1.3;margin:0 0 8px;color:#245785}
+.job-entry ul{padding-left:20px;margin:10px 0 0}
+.job-entry li{margin:7px 0;font-size:16px;line-height:1.45}
+.job-entry .role-date{font-size:12px;color:#52647c;margin:0}
+.job-entry .achievement{margin-top:12px;padding:14px 20px;border:1px solid #ccdef5;background:#edf5ff;border-radius:18px}
+.job-entry .achievement p{margin:0;font-size:16px;line-height:1.45}
+.previous-assignment{margin-top:12px;padding-top:10px;border-top:1px solid #dce6f2;font-size:13px}
+.previous-assignment span{display:block;color:#52647c;font-size:12px;margin:3px 0}
+.previous-assignment p{font-size:14px!important;margin:4px 0}
+@media(min-width:761px) and (max-height:780px){
+ .job-entry .responsibility-card{margin-top:10px;padding:12px 16px}
+ .job-entry li{font-size:14px;line-height:1.35;margin:5px 0}
+ .job-entry h4{font-size:15px;margin-bottom:5px}
+ .job-entry .achievement{margin-top:10px;padding:12px 16px}
+ .job-entry .achievement p{font-size:14px;line-height:1.4}
+ .job-heading>p{font-size:13px}
+ .job-heading h3{font-size:20px}
+ .previous-assignment{margin-top:9px;padding-top:8px}
+ .previous-assignment p{font-size:13px!important}
+}
+
+/* Hands-on tools separated from developing coding skills. */
+.current-tools{display:grid;gap:12px}
+.learning-card{margin-top:14px;border-left:3px solid #75a9ea;background:#f0f6ff}
+.learning-card .learning-note{font-size:14px;color:#52647c;margin-bottom:0}
+.tools-heading{margin:12px 0 8px}
+@media(min-width:761px){
+ .current-tools{grid-template-columns:repeat(3,minmax(0,1fr));gap:12px;margin-top:10px}
+ .current-tools .detail-card{padding:14px}
+ .current-tools h3{font-size:18px;line-height:1.3;margin-top:0}
+ .current-tools p{font-size:14px;line-height:1.45}
+ .learning-card{padding:16px 20px}
+ .learning-card h3{font-size:21px;margin:4px 0 8px}
+ .learning-card p{font-size:15px;line-height:1.45}
+}
+@media(min-width:761px) and (max-height:780px){
+ main:has(.current-tools) h2{font-size:30px;margin:8px 0 10px}
+ .current-tools h3{font-size:16px}
+ .current-tools p{font-size:13px}
+ .current-tools .detail-card{padding:11px}
+ .learning-card{padding:12px 16px;margin-top:10px}
+ .learning-card p{font-size:14px}
+}
+
+@media(min-width:761px){.about-cards{grid-template-columns:1fr;gap:16px}.about-cards p+p{margin-top:12px}}
+
+/* Three clear contact choices; LinkedIn intentionally inactive. */
+.contact-cards{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:14px;margin-top:24px}
+.contact-cards .detail-card{padding:22px 18px;display:flex;flex-direction:column;align-items:flex-start}
+.contact-symbol{width:44px;height:44px;padding:10px;background:#e7f0ff;color:#2563eb;border-radius:13px;margin-bottom:14px}
+.contact-symbol svg{width:100%;height:100%;fill:none;stroke:currentColor;stroke-width:1.6;stroke-linecap:round;stroke-linejoin:round}
+.contact-cards h3{margin:0 0 8px}.contact-cards p{font-size:15px;line-height:1.45;margin:0 0 20px}
+.contact-action{display:inline-flex;align-items:center;gap:8px;margin-top:auto;background:#2563eb;color:white;text-decoration:none;border-radius:10px;padding:10px 12px;font-size:13px;font-weight:600}
+.contact-action:hover{background:#1d4ed8}.contact-action.unavailable{background:#e5ebf3;color:#63738a}
+.contact-footnote{font-size:13px!important;line-height:1.5!important;color:#52647c;margin-top:20px!important}
+@media(max-width:1000px){.contact-cards{gap:10px}.contact-cards .detail-card{padding:16px 12px}.contact-action{font-size:12px;padding:9px}.contact-cards p{font-size:14px}}
+@media(max-width:760px){.contact-cards{grid-template-columns:1fr}}
+/* Browser QA: reduce content overflow while retaining readable card text. */
+@media(min-width:761px){
+ main:has(.service-offers) h2,main:has(.sample-grid) h2,main:has(.job-entry) h2{font-size:34px;margin:8px 0 12px}
+ main .service-offers{grid-auto-rows:auto;gap:10px;margin-top:14px}
+ main .service-offers article{padding:14px 16px}
+ main .service-offers h3{font-size:18px;margin-bottom:7px}
+ main .service-offers p{font-size:15px;line-height:1.4}
+ main .service-scope{font-size:12px;margin-top:12px}
+ .job-entry li{font-size:15px;line-height:1.4;margin:6px 0}
+ .job-entry .responsibility-card{padding:13px 17px;margin-top:10px}
+ .job-entry .achievement{padding:12px 17px;margin-top:10px}
+ .job-entry .achievement p{font-size:15px}
+}
+@media(min-width:761px){main .sample-grid{gap:10px;margin-top:12px}main .sample-grid article{padding:12px 15px}main .sample-grid h3{font-size:17px;margin-bottom:6px}main .sample-grid p{font-size:14px;line-height:1.35;margin-bottom:8px}main .sample-grid .sample-preview{padding:7px 10px;margin-top:auto}}
+/* Keep both panels anchored together as browser zoom changes. */
+@media(min-width:761px){
+ .shell{align-items:stretch}
+ .profile{justify-content:flex-start;align-self:stretch;transform-origin:top left}
+ .right-panel{align-self:stretch;transform-origin:top left}
+ .profile .portrait{margin-top:0}
+}
+
+/* Consistent internal padding, capped at 50px on wide desktops. */
+@media(min-width:761px){
+ .profile{padding:clamp(24px,3vw,50px)}
+ .right-panel main{padding:clamp(24px,3vw,50px)}
+ .panel-nav{padding:18px clamp(24px,3vw,50px)}
+}
+@media(min-width:761px) and (max-height:800px){
+ .profile,.right-panel main{padding-top:22px;padding-bottom:22px}
+ .profile .portrait{width:76px;margin-bottom:10px}
+}
+/* Shared desktop frame: panels resize together with a bounded reading width. */
+@media(min-width:761px){
+ .shell{width:100%;max-width:1600px;margin-inline:auto;grid-template-columns:minmax(0,3fr) minmax(0,7fr);align-items:stretch;align-content:stretch}
+ .profile,.right-panel{height:100%;min-height:0;align-self:stretch;transform:none}
+ .profile{justify-content:flex-start}
+ .right-panel main section{margin-inline:0;max-width:none}
+ .right-panel .intro-home{justify-content:flex-start}
+ .right-panel main::before{position:absolute;top:0;right:-65px}
+}
+/* Desktop-only adaptation; dedicated phone design remains deferred. */
+@media(min-width:761px){
+ .shell{height:100dvh;min-height:0;padding:clamp(12px,1.4vw,22px);gap:clamp(12px,1.4vw,22px)}
+ .profile{overflow-y:auto;overflow-x:hidden}
+ .right-panel main{overflow-y:auto;overflow-x:hidden}
+ .profile,.right-panel main{scrollbar-width:thin;scrollbar-color:#c7d9ed transparent}
+ .profile h1,.right-panel h2,.detail-card,.service-offers article,.sample-grid article{overflow-wrap:break-word}
+}
+@media(min-width:761px) and (max-width:1199px){
+ .shell{grid-template-columns:minmax(250px,31fr) minmax(0,69fr)}
+ .profile,.right-panel main{padding-inline:24px}
+ .panel-nav{padding-inline:16px}
+ .panel-nav #track{grid-template-columns:repeat(3,minmax(0,1fr))}
+ .panel-nav .category{min-height:40px;font-size:12px}
+ .current-tools{grid-template-columns:1fr}
+ .current-tools .detail-card{padding:14px}
+ .contact-cards{grid-template-columns:1fr}
+ .contact-cards .detail-card{padding:16px}
+ .role-lines{grid-template-columns:1fr}
+}
+@media(min-width:761px) and (max-height:800px){
+ .profile,.right-panel main{padding-top:20px;padding-bottom:20px}
+ .right-panel main h2{font-size:30px;margin:8px 0 12px}
+ .is-home .category{height:68px;padding:14px 18px;font-size:19px}
+ .intro-home .typed-motto{font-size:29px;min-height:3.45em}
+}
+
+/* Compact profile contacts remain in one row. */
+.profile-contacts{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:7px;width:100%;margin-top:14px}
+.profile-contact{display:flex;flex-direction:column;justify-content:center;align-items:center;gap:5px;min-width:0;min-height:72px;padding:9px 3px;border:1px solid #d7e5f5;border-radius:12px;background:#edf4ff;color:#24578e;text-decoration:none;font-size:12px;line-height:1.25;text-align:center}
+.profile-contact:hover{background:#e0edff;border-color:#a7c8ee}
+.profile-contact.is-unavailable{background:#f1f3f7;color:#697a8e}
+.profile-contact small{font-size:9px;line-height:1.2}
+.mini-icon,.mini-icon svg{width:18px;height:18px;display:block}
+.mini-icon svg{fill:none;stroke:currentColor;stroke-width:1.6;stroke-linecap:round;stroke-linejoin:round}
+@media(min-width:761px) and (max-width:1199px){.profile-contacts{gap:5px}.profile-contact{font-size:11px}}
+
+/* Center the content block while preserving the shared frame and normal zoom. */
+@media(min-width:761px){
+ .right-panel main{display:flex;flex-direction:column}
+ .right-panel main>section{width:100%;max-width:850px;margin:auto;flex:0 0 auto}
+ .right-panel .intro-home{height:auto;min-height:0;justify-content:center}
+ .profile>*{flex-shrink:0}
+}
+@media(min-width:761px) and (max-height:800px){
+ .profile .bio{font-size:15px;line-height:1.45}
+ .profile>.eyebrow{margin-bottom:10px}
+ .profile .availability{padding:8px 0;margin:8px 0}
+ .profile-contacts{margin-top:10px}
+ .profile-contact{min-height:64px;padding-block:7px}
+}
+
+/* Profile centers safely in tall desktop panels, retaining left-aligned text. */
+@media(min-width:761px){
+ .profile .portrait{margin-top:auto}
+ .profile>.placeholder-note{margin-bottom:auto}
+}
+/* Compact phone header; desktop rules stay unchanged. */
+@media(max-width:760px){
+ .profile{display:grid;grid-template-columns:76px minmax(0,1fr);column-gap:16px;row-gap:8px;padding:20px;text-align:left;overflow:visible;align-items:start}
+ .profile .portrait{grid-column:1;grid-row:1 / 3;width:76px;margin:0;align-self:start;border-radius:18px}
+ .portrait span{font-size:30px}
+ .portrait small{font-size:6px;letter-spacing:.6px}
+ .profile h1{grid-column:2;grid-row:1;align-self:end;font-size:30px;line-height:1.1;margin:6px 0 0}
+ .profile>.eyebrow{grid-column:2;grid-row:2;font-size:10px;line-height:1.5;letter-spacing:1px;margin:0}
+ .profile-objective,.profile .strengths,.profile .location,.profile .availability,.profile-contacts,.profile>.placeholder-note{grid-column:1 / -1}
+ .profile-objective{margin-top:6px}
+ .profile .bio{max-width:none;font-size:14px;line-height:1.5;margin:0}
+ .profile .profile-label{font-size:10px!important;margin-bottom:5px}
+ .profile .strengths{margin:3px 0;gap:5px}
+ .profile .strengths span{font-size:10px;padding:3px 7px}
+ .profile .location{font-size:12px;margin:0}
+ .profile .availability{margin:2px 0;padding:8px 0}
+ .profile .availability p:not(.profile-label){font-size:13px;line-height:1.4}
+ .profile .availability small{font-size:11px;line-height:1.4;margin-top:3px}
+ .profile-contacts{margin-top:2px;gap:7px}
+ .profile-contact{min-height:58px;font-size:11px;padding:6px 3px;gap:3px}
+ .profile>.placeholder-note{font-size:9px;margin:0}
+ .right-panel{margin:12px}
+ .right-panel .intro-home{min-height:0;height:auto}
+ .right-panel main{min-height:0;padding:22px 18px}
+ .intro-home .typed-motto{font-size:25px;min-height:0;letter-spacing:-.6px}
+ .motto-card{padding:16px}
+ .is-home #track{gap:8px}
+ .is-home .category{min-height:62px;height:auto;padding:12px 10px;gap:8px;font-size:12px;flex-direction:row}
+ .is-home .category .icon{width:20px;height:20px;flex-shrink:0}
+ .panel-nav #track{grid-template-columns:repeat(3,minmax(0,1fr))}
+ .panel-nav .category{min-height:54px;gap:4px}
+ .current-tools,.contact-cards,.about-cards{grid-template-columns:1fr}
+ .employer-tabs{gap:6px}
+ .employer-tabs button{font-size:12px;padding:10px 4px}
+ .job-card{padding:14px}
+ .job-entry li{font-size:14px}
+ .viewer-header h2{font-size:17px}
+ .viewer-panel{padding:12px}
+ .viewer-controls{gap:7px}
+}
