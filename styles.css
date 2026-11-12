@@ -650,3 +650,18 @@ html[data-theme=dark] .v2-scroll-section,html[data-theme=dark] .v2-scroll-intro{
   height: 100%;
   object-fit: cover;
 }
+
+.portrait {
+  position: relative;
+  overflow: hidden;
+}
+
+.portrait > img {
+  position: absolute;
+  inset: 0;
+  display: block;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  object-position: center;
+}
