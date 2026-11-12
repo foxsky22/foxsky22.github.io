@@ -20,6 +20,8 @@ iconPaths.contact = iconPaths.mail;
 const sections = [['services','Services'],['projects','Work samples'],['experience','Experience'],['skills','Skills & Tools'],['about','About'],['contact','Contact']];
 const track = document.querySelector('#track');
 const content = document.querySelector('#content');
+const v2SavedView = (()=>{try{return localStorage.getItem('portfolio-v2-view') === 'scroll'}catch{return false}})();
+let v2ScrollMode = false;
 // Add local image paths, captions, and meaningful alt text here when ready.
 const sampleImages = {
  'email-layout': {src:'assets/demo-workflow.svg', title:'Email Layout Revision — demo placeholder', alt:'Illustrative workflow placeholder showing review, update, testing, and handover.', caption:'Placeholder only. The matching fictional practice sample has not been created yet.'},
@@ -55,6 +57,7 @@ sections.forEach(([id,label]) => {
  button.append(icon(id),document.createTextNode(label)); track.append(button);
 });
 function select(id, moveFocus = false) {
+  if(v2ScrollMode){v2Jump(id,moveFocus);return;}
   if (id !== 'home' && !sections.some(section => section[0] === id)) id = 'home';
   const before = new Map([...track.children].map(button => [button, button.getBoundingClientRect()]));
   clearInterval(typingTimer);
@@ -177,3 +180,122 @@ stage.addEventListener('pointermove',event=>{if(dragOrigin){panX=event.clientX-d
 stage.addEventListener('pointerup',()=>{dragOrigin=null;});
 stage.addEventListener('pointercancel',()=>{dragOrigin=null;});
 previewImage.addEventListener('error',()=>{document.querySelector('#viewer-caption').textContent='This sample image could not be loaded. Please close the preview and try again later.';});
+
+
+// Portfolio V2 enhancements: original layout remains the default unless saved otherwise.
+const themeToggle = document.getElementById('theme-toggle');
+const themeLabel = document.getElementById('theme-label');
+const themeSymbol = document.getElementById('theme-symbol');
+const systemDark = matchMedia('(prefers-color-scheme: dark)');
+function storedPreference(key){try{return localStorage.getItem(key)}catch{return null}}
+function savePreference(key,value){try{localStorage.setItem(key,value)}catch{}}
+function applyTheme(value){
+ document.documentElement.dataset.theme=value;
+ themeToggle.setAttribute('aria-label',`Switch to ${value==='dark'?'light':'dark'} mode`);
+ themeToggle.setAttribute('aria-pressed',String(value==='dark'));
+ themeLabel.textContent=value==='dark'?'Dark mode':'Light mode';
+ themeSymbol.textContent=value==='dark'?'☾':'☀';
+}
+applyTheme(storedPreference('portfolio-v2-theme') || (systemDark.matches?'dark':'light'));
+themeToggle.addEventListener('click',()=>{
+ const value=document.documentElement.dataset.theme==='dark'?'light':'dark';
+ savePreference('portfolio-v2-theme',value);applyTheme(value);
+});
+systemDark.addEventListener?.('change',event=>{
+ if(!storedPreference('portfolio-v2-theme'))applyTheme(event.matches?'dark':'light');
+});
+
+const contactToggle=document.getElementById('contact-toggle');
+const contactMenu=document.getElementById('contact-menu');
+function setContactOpen(open){contactMenu.hidden=!open;contactToggle.setAttribute('aria-expanded',String(open));}
+contactToggle.addEventListener('click',()=>setContactOpen(contactMenu.hidden));
+document.addEventListener('pointerdown',event=>{
+ if(!event.target.closest('.contact-menu-wrap'))setContactOpen(false);
+});
+document.addEventListener('keydown',event=>{
+ if(event.key==='Escape'&&!contactMenu.hidden){setContactOpen(false);contactToggle.focus();}
+});
+
+const scrollToggle=document.getElementById('scroll-toggle');
+const backToTop=document.getElementById('back-to-top');
+const v2Ids=sections.map(item=>item[0]);
+const pageScroll=matchMedia('(max-width:760px)');
+let scrollFrame=null;
+function v2Active(id){
+ selected=id;
+ track.querySelectorAll('button').forEach(button=>{
+  if(button.dataset.section===id)button.setAttribute('aria-current','page');
+  else button.removeAttribute('aria-current');
+ });
+}
+function v2Jump(id,focus=false){
+ if(id==='home'){
+  if(pageScroll.matches)window.scrollTo({top:panel.getBoundingClientRect().top+window.scrollY-12,behavior:reducedMotion.matches?'instant':'smooth'});else content.scrollTo({top:0,behavior:reducedMotion.matches?'instant':'smooth'});
+  v2Active('home');
+ }else{
+  const target=document.getElementById('v2-'+id);
+  if(!target)return;
+  target.scrollIntoView({block:'start',behavior:reducedMotion.matches?'instant':'smooth'});
+  v2Active(id);
+  if(focus)target.focus({preventScroll:true});
+ }
+}
+function v2UpdateActive(){
+ if(!v2ScrollMode)return;
+ const onPhone=pageScroll.matches;
+ backToTop.hidden=onPhone ? window.scrollY<260 : content.scrollTop<220;
+ const anchors=[...content.querySelectorAll('.v2-scroll-section')];
+ const threshold=onPhone ? 180 : content.getBoundingClientRect().top+Math.min(140,content.clientHeight*.3);
+ let active='home';
+ for(const anchor of anchors){if(anchor.getBoundingClientRect().top<=threshold)active=anchor.dataset.viewSection;}
+ if(active!==selected)v2Active(active);
+}
+function scheduleScrollUpdate(){
+ if(!v2ScrollMode || scrollFrame!==null)return;
+ scrollFrame=requestAnimationFrame(()=>{
+  scrollFrame=null;
+  v2UpdateActive();
+ });
+}
+function v2SetScrollMode(on,initial=false){
+ if(on===v2ScrollMode && !initial)return;
+ const keep=selected;
+ v2ScrollMode=on;
+ panel.classList.toggle('v2-scroll-mode',on);
+ scrollToggle.setAttribute('aria-checked',String(on));
+ scrollToggle.setAttribute('aria-label',on?'Disable scroll view':'Enable scroll view');
+ if(on){
+  clearInterval(typingTimer);
+  navHeader.append(nav);
+  panel.classList.remove('is-home');
+  homeButton.hidden=false;
+  content.replaceChildren();
+  const intro=document.createElement('section');intro.className='v2-scroll-intro';intro.tabIndex=-1;intro.innerHTML='<p class="eyebrow">PORTFOLIO / JAYCE SARDO</p><h2>Technical Virtual Assistant</h2><p class="lead">Explore my services, practice work samples, experience, skills, and background.</p>';
+  content.append(intro);
+  for(const id of v2Ids){
+   const wrapper=document.createElement('section');wrapper.className='v2-scroll-section';wrapper.id='v2-'+id;wrapper.dataset.viewSection=id;wrapper.tabIndex=-1;
+   wrapper.append(document.getElementById(id).content.cloneNode(true));
+   content.append(wrapper);
+  }
+  const employer=content.querySelector('#employer-detail');
+  if(employer)showEmployer('vxi');
+  decorateTools();prepareSampleButtons();
+  requestAnimationFrame(()=>{if(keep!=='home')v2Jump(keep);else content.scrollTop=0;v2UpdateActive();});
+ }else{
+  backToTop.hidden=true;
+  select(keep,false);
+ }
+ if(!initial)savePreference('portfolio-v2-view',on?'scroll':'click');
+}
+scrollToggle.addEventListener('click',()=>v2SetScrollMode(!v2ScrollMode));
+backToTop.addEventListener('click',()=>{
+ const behavior=reducedMotion.matches?'instant':'smooth';
+ if(pageScroll.matches)window.scrollTo({top:0,behavior});
+ else content.scrollTo({top:0,behavior});
+ const focusTarget=pageScroll.matches ? document.querySelector('.profile h1') : content.querySelector('.v2-scroll-intro');
+ focusTarget?.focus({preventScroll:true});
+});
+content.addEventListener('scroll',scheduleScrollUpdate,{passive:true});
+window.addEventListener('scroll',scheduleScrollUpdate,{passive:true});
+window.addEventListener('resize',scheduleScrollUpdate,{passive:true});
+if(v2SavedView)v2SetScrollMode(true,true);

@@ -417,7 +417,7 @@ h2 em{color:#2563eb}
 
 @media(min-width:761px){.about-cards{grid-template-columns:1fr;gap:16px}.about-cards p+p{margin-top:12px}}
 
-/* Three clear contact choices; LinkedIn intentionally inactive. */
+/* Contact cards */
 .contact-cards{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:14px;margin-top:24px}
 .contact-cards .detail-card{padding:22px 18px;display:flex;flex-direction:column;align-items:flex-start}
 .contact-symbol{width:44px;height:44px;padding:10px;background:#e7f0ff;color:#2563eb;border-radius:13px;margin-bottom:14px}
@@ -566,3 +566,85 @@ h2 em{color:#2563eb}
  .viewer-panel{padding:12px}
  .viewer-controls{gap:7px}
 }
+
+
+/* ===== Portfolio V2: progressive enhancement over original styling ===== */
+.v2-toolbar{display:flex;align-items:center;justify-content:flex-end;gap:10px;padding:10px 20px 0;position:relative;z-index:20}
+.v2-toolbar button,.v2-footer button{font:600 12px/1.3 Arial,Helvetica,sans-serif;cursor:pointer}
+#theme-toggle,#contact-toggle{border:1px solid #cbdcf2;background:#eff6ff;color:#174478;border-radius:11px;padding:10px 12px;min-height:40px}
+#theme-toggle{display:inline-flex;gap:7px;align-items:center}
+#theme-symbol{font-size:17px}
+.contact-menu-wrap{position:relative}
+#contact-menu{position:absolute;right:0;top:calc(100% + 8px);width:265px;padding:8px;border-radius:14px;background:#fff;border:1px solid #d6e4f5;box-shadow:0 15px 35px #102d4a35;z-index:50}
+#contact-menu[hidden]{display:none!important}
+#contact-menu a,#contact-menu .pending-link{display:block;text-decoration:none;color:#153e68;padding:12px;border-radius:9px;font-weight:700;font-size:14px}
+#contact-menu a:hover,#contact-menu a:focus-visible{background:#eaf3ff}
+#contact-menu small{display:block;font-size:11px;font-weight:400;color:#5e7188;margin-top:4px}
+#contact-menu .pending-link{color:#7d8997;opacity:.8}
+.v2-footer{flex:0 0 auto;display:flex;align-items:center;justify-content:flex-end;gap:10px;padding:10px 20px;border-top:1px solid #e2eaf4;background:#ffffffeb;position:relative;z-index:10}
+.view-label{font-size:12px;font-weight:700;color:#244668;cursor:pointer}
+.view-help{position:relative;cursor:help;color:#476a8d;font-size:15px}
+.view-help:is(:hover,:focus-visible)::after{content:attr(data-tip);position:absolute;right:0;bottom:calc(100% + 12px);width:220px;background:#193657;color:#fff;font-size:12px;font-weight:400;line-height:1.4;border-radius:9px;padding:11px;box-shadow:0 10px 24px #0003;z-index:30}
+#scroll-toggle{width:47px;height:27px;border-radius:20px;border:0;background:#9eafc2;padding:3px;display:flex;align-items:center;transition:background .25s}
+#scroll-toggle[aria-checked=true]{background:#2563eb}
+.switch-knob{width:21px;height:21px;background:white;border-radius:50%;box-shadow:0 1px 4px #0003;transition:transform .25s}
+#scroll-toggle[aria-checked=true] .switch-knob{transform:translateX(20px)}
+#back-to-top{margin-right:auto;background:#eaf3ff;color:#164c91;border:1px solid #c6d9ef;border-radius:10px;width:35px;height:34px;font-size:20px}
+#back-to-top[hidden]{display:none!important}
+.v2-scroll-mode .panel-nav{display:block!important}
+.v2-scroll-mode .right-panel main,.right-panel.v2-scroll-mode main{overflow-y:auto;overflow-x:hidden;scroll-behavior:smooth;overscroll-behavior:contain}
+.v2-scroll-intro{padding-bottom:28px;border-bottom:1px solid #dce7f4;margin-bottom:28px}
+.v2-scroll-intro h2{font-size:clamp(27px,3vw,45px);margin:8px 0}
+.v2-scroll-section{padding:24px 0 36px;border-bottom:1px solid #dce7f4;scroll-margin-top:14px;min-height:0}
+.v2-scroll-section:focus{outline:none}
+.v2-scroll-section .content-cards,.v2-scroll-section .projects{max-width:100%}
+.v2-scroll-mode #content{transition:opacity .25s ease}
+.v2-scroll-mode .panel-nav .category[aria-current=page]{background:#2563eb;color:white}
+:where(button,a,[tabindex]):focus-visible{outline:3px solid #f59e0b!important;outline-offset:3px}
+@media(max-width:760px){
+ .v2-toolbar{padding:10px 14px 0;gap:8px}
+ #theme-toggle,#contact-toggle{min-height:44px;padding:10px;font-size:12px}
+ #contact-menu{width:min(280px,calc(100vw - 45px))}
+ #contact-menu a,#contact-menu .pending-link{min-height:48px;box-sizing:border-box}
+ .v2-footer{padding:12px 14px;min-height:52px}
+ #back-to-top{
+  position:fixed;
+  right:calc(16px + env(safe-area-inset-right, 0px));
+  bottom:calc(16px + env(safe-area-inset-bottom, 0px));
+  width:44px;
+  height:44px;
+  margin:0;
+  box-shadow:0 4px 14px #19365738;
+ }
+ .right-panel.v2-scroll-mode .v2-footer{padding-right:76px}
+ .v2-scroll-mode .right-panel main,.right-panel.v2-scroll-mode main{overflow:visible;scroll-behavior:auto}
+ .v2-scroll-section{padding:20px 0 30px}
+ .v2-scroll-section h2{font-size:clamp(26px,7vw,40px)}
+}
+.portrait {
+  overflow: hidden;
+}
+
+.portrait img {
+  display: block;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+/* Theme overrides: preserve original layout and blue design, update both panels. */
+html[data-theme=dark]{color-scheme:dark;--paper:#0a1424;--ink:#e8f0fa;--muted:#b5c7dc;--line:#344a63;--accent:#60a5fa}
+html[data-theme=dark] body,html[data-theme=dark] .shell{background:#0a1424!important;color:#e8f0fa!important}
+html[data-theme=dark] .profile,html[data-theme=dark] .right-panel{background:#142338!important;color:#e8f0fa!important;border-color:#334b66!important}
+html[data-theme=dark] .right-panel main,html[data-theme=dark] .panel-nav,html[data-theme=dark] .v2-footer{background:#142338!important;color:#e8f0fa!important;border-color:#334b66!important}
+html[data-theme=dark] :is(.detail-card,.projects article,.motto-card,.job-entry,.job-heading,.previous-assignment,.availability,.learning-card,.contact-cards article,.employer-tabs,.intro-home .category,.panel-nav .category,.profile-contact,.strengths span){background:#1c3049!important;color:#e8f0fa!important;border-color:#395574!important;box-shadow:none}
+html[data-theme=dark] :is(h1,h2,h3,h4,p,li,strong,.lead,.bio,.eyebrow,.profile-label,.location,.note,.card-label,.role-date,.tools-heading,.contact-footnote,.intro-hint){color:#e8f0fa!important}
+html[data-theme=dark] :is(.category[aria-current=page],.panel-nav .category[aria-current=page]){background:#2563eb!important;color:white!important;border-color:#60a5fa!important}
+html[data-theme=dark] :is(.tool-list span,.employer-tabs button,.sample-preview,.contact-action,.profile-contact){background:#263e5b!important;color:#e5f0ff!important;border-color:#45617e!important}
+html[data-theme=dark] :is(.employer-tabs button[aria-pressed=true],.contact-action:not(.unavailable)){background:#2563eb!important;color:white!important}
+html[data-theme=dark] :is(#theme-toggle,#contact-toggle,#back-to-top){background:#253d5b;color:#f0f6ff;border-color:#486584}
+html[data-theme=dark] #contact-menu{background:#1b2e46;border-color:#45617e}
+html[data-theme=dark] #contact-menu a{color:#e9f2ff}
+html[data-theme=dark] #contact-menu a:hover{background:#2b4767}
+html[data-theme=dark] #contact-menu small,html[data-theme=dark] .view-label,html[data-theme=dark] .view-help{color:#c2d4e9}
+html[data-theme=dark] .v2-scroll-section,html[data-theme=dark] .v2-scroll-intro{border-color:#36516e}
+@media(prefers-reduced-motion:reduce){*,*::before,*::after{scroll-behavior:auto!important;animation-duration:.01ms!important;transition-duration:.01ms!important}}
