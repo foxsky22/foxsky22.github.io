@@ -621,7 +621,16 @@ h2 em{color:#2563eb}
  .v2-scroll-section{padding:20px 0 30px}
  .v2-scroll-section h2{font-size:clamp(26px,7vw,40px)}
 }
+.portrait {
+  overflow: hidden;
+}
 
+.portrait img {
+  display: block;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
 /* Theme overrides: preserve original layout and blue design, update both panels. */
 html[data-theme=dark]{color-scheme:dark;--paper:#0a1424;--ink:#e8f0fa;--muted:#b5c7dc;--line:#344a63;--accent:#60a5fa}
 html[data-theme=dark] body,html[data-theme=dark] .shell{background:#0a1424!important;color:#e8f0fa!important}
@@ -639,29 +648,3 @@ html[data-theme=dark] #contact-menu a:hover{background:#2b4767}
 html[data-theme=dark] #contact-menu small,html[data-theme=dark] .view-label,html[data-theme=dark] .view-help{color:#c2d4e9}
 html[data-theme=dark] .v2-scroll-section,html[data-theme=dark] .v2-scroll-intro{border-color:#36516e}
 @media(prefers-reduced-motion:reduce){*,*::before,*::after{scroll-behavior:auto!important;animation-duration:.01ms!important;transition-duration:.01ms!important}}
-
-.portrait {
-  overflow: hidden;
-}
-
-.portrait img {
-  display: block;
-  width: 100%;
-  height: 100%;
-  object-fit: cover;
-}
-
-.portrait {
-  position: relative;
-  overflow: hidden;
-}
-
-.portrait > img {
-  position: absolute;
-  inset: 0;
-  display: block;
-  width: 100%;
-  height: 100%;
-  object-fit: cover;
-  object-position: center;
-}
